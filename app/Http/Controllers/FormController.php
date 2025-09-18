@@ -68,8 +68,18 @@ class FormController extends Controller
     public function edit(Form $form)
     {
         $form->load('fields.options');
-        return Inertia::render('Forms/Edit', ['form' => $form]);
+
+        // Add a temporary localId for each field (used by Vue for v-for keys)
+        $form->fields->transform(function ($field) {
+            $field->localId = $field->id;
+            return $field;
+        });
+
+        return Inertia::render('Forms/Edit', [
+            'form' => $form
+        ]);
     }
+
 
     public function update(Request $request, Form $form)
     {
@@ -132,8 +142,22 @@ class FormController extends Controller
 
     public function preview(Form $form)
     {
-        $form->load('fields.options');
-        return Inertia::render('Forms/Preview', ['form' => $form]);
+        $form->load('fields.options'); // load options too
+
+        // convert each field's options collection to array of labels
+        $form->fields->transform(function ($field) {
+            $field->options = $field->options->pluck('label')->toArray(); 
+            return $field;
+        });
+
+        return Inertia::render('Forms/Preview', [
+            'form' => $form
+        ]);
     }
+
+
+
+
+    
     
 }

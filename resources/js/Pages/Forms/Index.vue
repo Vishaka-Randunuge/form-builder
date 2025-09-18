@@ -15,9 +15,10 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="form in forms" :key="form.id" class="p-4 border rounded shadow-sm bg-white">
           <h2 class="font-medium text-lg mb-2">{{ form.title }}</h2>
-          <div class="flex gap-2">
+          <div class="flex gap-2 flex-wrap">
             <Link :href="`/forms/${form.id}/edit`" class="px-3 py-1 bg-blue-600 text-white rounded">Edit</Link>
             <Link :href="`/forms/${form.id}/preview`" class="px-3 py-1 border rounded">Preview</Link>
+            <Link :href="`/forms/${form.id}/submissions`" class="px-3 py-1 bg-black text-white rounded">View Submissions</Link>
             <button @click="deleteForm(form.id)" class="px-3 py-1 bg-red-600 text-white rounded">Delete</button>
           </div>
         </div>

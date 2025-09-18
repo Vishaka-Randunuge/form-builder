@@ -12,9 +12,17 @@ class SubmissionController extends Controller
     //
 
     public function index(Form $form) {
-        $submissions = $form->submissions()->latest()->get();
-        return Inertia::render('Forms/Submissions', ['form' => $form, 'submissions' => $submissions]);
+        $submissions = $form->submissions()
+            ->latest()
+            ->with('answers.field') // eager load answers and the field info
+            ->get();
+    
+        return Inertia::render('Forms/Submissions', [
+            'form' => $form,
+            'submissions' => $submissions,
+        ]);
     }
+    
 
     public function show(Form $form, Submission $submission) {
         $submission->load('answers.field');
@@ -23,6 +31,16 @@ class SubmissionController extends Controller
             'submission' => $submission
         ]);
     }
+    
+    public function allFormsSubmissions() {
+        // Get all forms with submission count
+        $forms = Form::withCount('submissions')->get();
+    
+        return Inertia::render('Forms/AllSubmissions', [
+            'forms' => $forms
+        ]);
+    }
+
     
     public function submit(Request $request, Form $form) {
         $submission = Submission::create(['form_id' => $form->id]);

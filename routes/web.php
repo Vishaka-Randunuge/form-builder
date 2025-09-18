@@ -39,6 +39,14 @@ Route::middleware('auth')->group(function () {
     // Submission routes
     Route::get('/forms/{form}/submissions', [SubmissionController::class, 'index'])->name('forms.submissions.index');
     Route::get('/forms/{form}/submissions/{submission}', [SubmissionController::class, 'show'])->name('forms.submissions.show');
+
+    Route::get('/submissions', [SubmissionController::class, 'allFormsSubmissions'])->middleware('auth')->name('submissions.index');
+    Route::post('/forms/{form}/submit', [SubmissionController::class, 'submit'])->name('forms.submit');
+    
+    Route::get('/forms/{form}/edit', [FormController::class, 'edit'])->name('forms.edit');
+    Route::put('/forms/{form}', [FormController::class, 'update'])->name('forms.update');
+
+    
 });
 
 // Manual logout route
