@@ -1,20 +1,21 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\FormController;
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FormController;
+use App\Http\Controllers\SubmissionController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
+        'canLogin'       => Route::has('login'),
+        'canRegister'    => Route::has('register'),
         'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+        'phpVersion'     => PHP_VERSION,
     ]);
 });
 
@@ -23,41 +24,41 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
-Route::middleware('auth')->group(function () {
-    // List all forms
-    Route::get('/forms', [FormController::class, 'index'])->name('forms.index');
+    // Form resource routes (excluding 'show')
+    Route::resource('forms', FormController::class)->except(['show']);
 
-    // Create form
-    Route::get('/forms/create', [FormController::class, 'create'])->name('forms.create');
-    Route::post('/forms', [FormController::class, 'store'])->name('forms.store');
-
-    // Edit form
-    Route::get('/forms/{form}/edit', [FormController::class, 'edit'])->name('forms.edit');
-
-    // Delete form
-    Route::delete('/forms/{form}', [FormController::class, 'destroy'])->name('forms.destroy');
-
-    // Preview form
+    // Additional form-related routes
     Route::get('/forms/{form}/preview', [FormController::class, 'preview'])->name('forms.preview');
+    Route::post('/forms/{form}/submit', [SubmissionController::class, 'submit'])->name('forms.submit');
+
+    // Submission routes
+    Route::get('/forms/{form}/submissions', [SubmissionController::class, 'index'])->name('forms.submissions.index');
+    Route::get('/forms/{form}/submissions/{submission}', [SubmissionController::class, 'show'])->name('forms.submissions.show');
 });
 
+// Manual logout route
 Route::post('/logout', function () {
     Auth::logout();
     return redirect('/');
 })->name('logout');
 
+// Dev login route (for local only)
 Route::get('/dev-login', function () {
     if (!app()->environment('local')) {
         abort(403);
     }
-    $user = User::where('email','admin@example.com')->first();
-    if (! $user) abort(404);
+
+    $user = User::where('email', 'admin@example.com')->first();
+    abort_if(!$user, 404);
+
     Auth::login($user);
     return redirect('/dashboard');
 });
+
+// Auth scaffolding (e.g., Breeze, Jetstream, etc.)
 require __DIR__.'/auth.php';

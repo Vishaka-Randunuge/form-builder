@@ -8,16 +8,16 @@
 
     <!-- Navigation Links -->
     <nav class="space-y-2 py-6 px-4">
-      <inertia-link href="/dashboard" class="block p-2 rounded hover:bg-gray-300">Dashboard</inertia-link>
-      <inertia-link href="/forms" class="block p-2 rounded hover:bg-gray-300">Forms</inertia-link>
-      <inertia-link href="/forms/create" class="block p-2 rounded hover:bg-gray-300">Form Builder</inertia-link>
-      <inertia-link href="/submissions" class="block p-2 rounded hover:bg-gray-300">Submissions</inertia-link>
+        <Link href="/dashboard" class="block p-2 rounded hover:bg-gray-300">Dashboard</Link>
+        <Link href="/forms" class="block p-2 rounded hover:bg-gray-300">Forms</Link>
+        <Link href="/forms/create" class="block p-2 rounded hover:bg-gray-300">Form Builder</Link>
+        <Link href="/submissions" class="block p-2 rounded hover:bg-gray-300">Submissions</Link>
     </nav>
   </div>
 </template>
 
 <script setup>
-// Any logic related
+import { Link } from '@inertiajs/vue3'
 </script>
 
 <style scoped>

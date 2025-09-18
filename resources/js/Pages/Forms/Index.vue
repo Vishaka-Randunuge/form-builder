@@ -1,10 +1,15 @@
 <template>
   <AuthenticatedLayout>
     <div class="max-w-5xl mx-auto">
-      <h1 class="text-2xl font-semibold mb-6">Saved Forms</h1>
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-semibold">Saved Forms</h1>
+        <Link href="/forms/create" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+          Create Form
+        </Link>
+      </div>
 
       <div v-if="forms.length === 0" class="text-gray-600">
-        No forms yet. <Link href="/forms/create" class="text-blue-600">Create one</Link>.
+        No forms yet.
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -135,4 +135,5 @@ class FormController extends Controller
         $form->load('fields.options');
         return Inertia::render('Forms/Preview', ['form' => $form]);
     }
+    
 }

@@ -53,19 +53,20 @@
       </div>
 
       <!-- Actions -->
-      <div class="mt-6 flex items-center gap-3">
-        <div class="flex gap-2">
-          <button @click="addField('text')" class="px-3 py-2 border rounded">+ Text</button>
-          <button @click="addField('textarea')" class="px-3 py-2 border rounded">+ Textarea</button>
-          <button @click="addField('checkbox')" class="px-3 py-2 border rounded">+ Checkbox</button>
-          <button @click="addField('radio')" class="px-3 py-2 border rounded">+ Radio</button>
-        </div>
+    <div class="mt-6 flex items-center gap-3">
+    <div class="flex gap-2">
+        <button @click="addField('text')" class="px-3 py-2 border rounded">+ Text</button>
+        <button @click="addField('textarea')" class="px-3 py-2 border rounded">+ Textarea</button>
+        <button @click="addField('checkbox')" class="px-3 py-2 border rounded">+ Checkbox</button>
+        <button @click="addField('radio')" class="px-3 py-2 border rounded">+ Radio</button>
+    </div>
 
-        <div class="ml-auto">
-          <button @click="saveForm" class="px-4 py-2 bg-blue-600 text-white rounded">Save form</button>
-          <button @click="togglePreview" class="ml-2 px-4 py-2 border rounded">Preview</button>
-        </div>
-      </div>
+    <div class="ml-auto flex gap-2">
+        <button @click="saveForm" class="px-4 py-2 bg-blue-600 text-white rounded">Save form</button>
+        <button @click="cancelForm" class="px-4 py-2 border rounded">Cancel</button>
+    </div>
+    </div>
+
     </div>
   </AuthenticatedLayout>
 </template>
@@ -106,4 +107,12 @@ function saveForm() {
   }
   form.post('/forms');
 }
+import { router } from '@inertiajs/vue3';
+
+function cancelForm() {
+  if(confirm("Discard changes and go back?")) {
+    router.get('/forms');
+  }
+}
+
 </script>
