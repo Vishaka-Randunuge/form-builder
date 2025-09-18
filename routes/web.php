@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\FormController;
 
 
 Route::get('/', function () {
@@ -25,6 +26,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware('auth')->group(function () {
+    // List all forms
+    Route::get('/forms', [FormController::class, 'index'])->name('forms.index');
+
+    // Create form
+    Route::get('/forms/create', [FormController::class, 'create'])->name('forms.create');
+    Route::post('/forms', [FormController::class, 'store'])->name('forms.store');
+
+    // Edit form
+    Route::get('/forms/{form}/edit', [FormController::class, 'edit'])->name('forms.edit');
+
+    // Delete form
+    Route::delete('/forms/{form}', [FormController::class, 'destroy'])->name('forms.destroy');
+
+    // Preview form
+    Route::get('/forms/{form}/preview', [FormController::class, 'preview'])->name('forms.preview');
 });
 
 Route::post('/logout', function () {
